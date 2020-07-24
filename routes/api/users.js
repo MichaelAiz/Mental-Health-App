@@ -8,16 +8,6 @@ const secret = require('../../config/keys').secret
 // User Model
 const User = require('../../models/User');
 
-//Middleware 
-function auth(req,res, next) {
-    const token = req.header('x-auth-token');
-
-    //Check for token
-    if(!token) res.status(401).json({msg: "No token, authorization denied"});
-
-    // Verify token 
-    const decoded
-}
 
 // @route POST api/users/register
 // @desc Register a new user

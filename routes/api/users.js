@@ -4,7 +4,7 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const saltRounds = 10;
 const secret = require('../../config/keys').secret
-
+const {body, validationResult} = require('express-validator');
 // User Model
 const User = require('../../models/User');
 
@@ -12,12 +12,23 @@ const User = require('../../models/User');
 // @route POST api/users/register
 // @desc Register a new user
 // @access Public 
-router.post('/register', (req, res) => {
-    const { name, email, password} = req.body;
-    if(!name || !email || !password) {
-        return res.status(400).json({msg: 'Please enter all fields'});
+router.post('/register', [
+    body('name').not().isEmpty().withMessage('Name mus not be empty'),
+    body('email').not().isEmpty().withMessage('Email must not be empty'),
+    body('password').not().isEmpty().withMessage("Password must not be empty"),
+    body('passwordConfirm').custom((value, {req}) => {
+        if (value !== req.body.password) {
+            throw new Error('Passwords must match');
+        }
+        return true;
+    })
+    ],(req, res) => {
+    const errors = validationResult(req);
+    if(!errors.isEmpty()){
+        console.log(errors);
+        return res.status(400).json({errors: errors.array()})
     }
-
+    const { name, email, password} = req.body;
     User.findOne({ email })
         .then(user => {
             if(user) return res.status(400).json({msg: "email is taken"});

@@ -1,0 +1,32 @@
+.App {
+    text-align: center;
+    min-height: 100vh;
+    background-repeat: no-repeat;
+    background-size: cover;
+    overflow: hidden;
+    background-color:lightblue;
+    font-size: calc(10px + 2vmin);
+}
+
+.landing-header{
+    font-weight: 600;
+    font-size: 3rem;
+}
+
+.landing-body{
+    min-height: 100vh;
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+
+.login-form{
+    padding: 15px;
+    height: 100%;
+    background-color:lightyellow;
+}
+
+@media (min-width: 760px){
+
+}

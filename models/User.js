@@ -8,8 +8,6 @@ const QuoteSchema = new Schema ({
     }
 })
 
-
-
 const UserSchema = new Schema({
     name: {
         type: String,

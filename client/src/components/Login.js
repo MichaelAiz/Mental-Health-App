@@ -1,0 +1,191 @@
+import React, { Component } from "react";
+import axios from "axios";
+import Navbar from './Navbar';
+import { withRouter } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link,
+  Redirect,
+  useHistory,
+  useLocation,
+} from "react-router-dom";
+import {
+  Card,
+  CardImg,
+  CardText,
+  CardBody,
+  CardTitle,
+  CardSubtitle,
+  Button,
+} from "reactstrap";
+import { InputGroup, InputGroupAddon, InputGroupText, Input } from "reactstrap";
+import { Form, FormGroup, Label, FormText } from "reactstrap";
+
+
+
+class Login extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      action: "register",
+      name: "",
+      email: "",
+      password: "",
+      passwordConfirm: "",
+      token: "",
+    };
+  }
+
+  render() {
+    return this.showForm();
+  }
+
+  handleInputChange = (event) => {
+    const target = event.target;
+    const name = target.name;
+
+    this.setState({ [name]: target.value });
+  };
+
+  showForm = () => {
+    if (this.state.action === "login") {
+      return this.login();
+    } else {
+      console.log("hi");
+      return this.register();
+    }
+  };
+
+  handleRegister = (e) => {
+
+    e.preventDefault();
+
+    axios
+      .post("/api/users/register", {
+        name: this.state.name,
+        email: this.state.email,
+        password: this.state.password,
+      })
+      .then((res) => localStorage.setItem('token', res.data.token))
+      .then(()=>this.props.history.push("/auth"))
+      .catch((error) => console.log(error.response.data));
+  };
+
+  handleLogin = (e) => {
+
+    e.preventDefault();
+    axios
+      .post("/api/users/login", {
+        email: this.state.email,
+        password: this.state.passworde,
+      })
+      .then((res) => console.log(res))
+      .catch((err) => console.log(err));
+  };
+
+  login = () => {
+    return (
+      <div>
+        <Form onSubmit={this.handleLogin} className="login-form m-2">
+          <h2 style={{ textAlign: "center" }}>Login </h2>
+          <FormGroup style={{ textAlign: "left" }}>
+            <Label for="exampleEmail">Email</Label>
+            <Input
+              type="email"
+              name="email"
+              id="exampleEmail"
+              placeholder="with a placeholder"
+              onChange={this.handleInputChange}
+            />
+          </FormGroup>
+          <FormGroup style={{ textAlign: "left" }}>
+            <Label for="examplePassword">Password</Label>
+            <Input
+              type="password"
+              name="password"
+              id="examplePassword"
+              placeholder="password placeholder"
+              onChange={this.handleInputChange}
+            />
+          </FormGroup>
+          <Button className="btn-lg btn-dark w-100">Login</Button>
+          <h3 class="mt-2">Don't have an account?</h3>
+          <Button
+            type="button"
+            color="dark"
+            onClick={() => this.setState({ action: "register" })}
+            className="btn-lg"
+          >
+            Register Now
+          </Button>
+        </Form>
+      </div>
+    );
+  };
+
+  register = () => {
+    return (
+      <div>
+        <Form onSubmit={this.handleRegister} className="login-form m-2">
+          <h2 style={{ textAlign: "center" }}>Register Now </h2>
+          <FormGroup style={{ textAlign: "left" }}>
+            <Label for="name">Name</Label>
+            <Input
+              type="name"
+              name="name"
+              id="name"
+              placeholder="Name"
+              onChange={this.handleInputChange}
+            />
+          </FormGroup>
+          <FormGroup style={{ textAlign: "left" }}>
+            <Label for="exampleEmail">Email</Label>
+            <Input
+              type="email"
+              name="email"
+              id="exampleEmail"
+              placeholder="with a placeholder"
+              onChange={this.handleInputChange}
+            />
+          </FormGroup>
+          <FormGroup style={{ textAlign: "left" }}>
+            <Label for="examplePassword">Password</Label>
+            <Input
+              type="password"
+              name="password"
+              id="examplePassword"
+              placeholder="password placeholder"
+              onChange={this.handleInputChange}
+            />
+          </FormGroup>
+          <FormGroup style={{ textAlign: "left" }}>
+            <Label for="passwordConfirm">Confirm Password</Label>
+            <Input
+              type="passwordConfirm"
+              name="passwordConfirm"
+              id="passwordConfirm"
+              placeholder="password placeholder"
+              onChange={this.handleInputChange}
+            />
+          </FormGroup>
+          <Button type className="btn-lg btn-dark btn-block">
+            Register
+          </Button>
+          <h3 class="mt-2">Already have an account?</h3>
+          <Button
+            type="button"
+            color="dark"
+            onClick={() => this.setState({ action: "login" })}
+            className="btn-lg"
+          >
+            Login
+          </Button>
+        </Form>
+      </div>
+    );
+  };
+}
+
+export default withRouter(Login);

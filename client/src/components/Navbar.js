@@ -23,17 +23,23 @@ class AppNavbar extends Component {
       <div>
         <Navbar color="dark" dark expand="sm" className="mb-5">
           <NavbarBrand href="/" className="mr-auto">
-            reactstrap
+            Mental-Health-App
           </NavbarBrand>
           <NavbarToggler onClick={this.toggle} className="mr-2" />
           <Collapse isOpen={this.state.collapsed} navbar>
             <Nav className = "ml-auto" navbar>
               <NavItem>
-                <NavLink href="/components/">Components</NavLink>
+                <NavLink href="/components/">Quotes</NavLink>
+              </NavItem>
+              <NavItem>
+                <NavLink href="/components/">Pictures</NavLink>
+              </NavItem>
+              <NavItem>
+                <NavLink href="/components/">Songs</NavLink>
               </NavItem>
               <NavItem>
                 <NavLink href="https://github.com/reactstrap/reactstrap">
-                  GitHub
+                  Resources
                 </NavLink>
               </NavItem>
             </Nav>

@@ -12,12 +12,6 @@ import {
   useLocation,
 } from "react-router-dom";
 import {
-  Card,
-  CardImg,
-  CardText,
-  CardBody,
-  CardTitle,
-  CardSubtitle,
   Button,
 } from "reactstrap";
 import { InputGroup, InputGroupAddon, InputGroupText, Input } from "reactstrap";
@@ -35,6 +29,8 @@ class Login extends Component {
       password: "",
       passwordConfirm: "",
       token: "",
+      errors: [
+      ]
     };
   }
 
@@ -43,6 +39,7 @@ class Login extends Component {
   }
 
   handleInputChange = (event) => {
+    this.setState({errors: []});
     const target = event.target;
     const name = target.name;
 
@@ -61,16 +58,19 @@ class Login extends Component {
   handleRegister = (e) => {
 
     e.preventDefault();
-
     axios
       .post("/api/users/register", {
         name: this.state.name,
         email: this.state.email,
         password: this.state.password,
+        passwordConfirm: this.state.passwordConfirm
       })
       .then((res) => localStorage.setItem('token', res.data.token))
-      .then(()=>this.props.history.push("/auth"))
-      .catch((error) => console.log(error.response.data));
+      .then(()=>this.props.history.push("/home"))
+      .catch((errors) => {
+        console.log(errors.response.data.errors[0])
+        this.setState({errors: errors.response.data.errors });
+      });
   };
 
   handleLogin = (e) => {
@@ -79,13 +79,19 @@ class Login extends Component {
     axios
       .post("/api/users/login", {
         email: this.state.email,
-        password: this.state.passworde,
+        password: this.state.password,
       })
-      .then((res) => console.log(res))
-      .catch((err) => console.log(err));
-  };
+      .then((res) => localStorage.setItem('token', res.data.token))
+      .then(()=>this.props.history.push("/home"))
+      .catch((errors) => {
+        this.setState({errors: errors.response.data.errors });
+        console.log(errors.response)
+        console.log(this.state.errors);
+      });
+  }
 
   login = () => {
+    const {errors} = this.state;
     return (
       <div>
         <Form onSubmit={this.handleLogin} className="login-form m-2">
@@ -100,6 +106,9 @@ class Login extends Component {
               onChange={this.handleInputChange}
             />
           </FormGroup>
+          <div class = "mb-2" style={{ textAlign: "left", fontSize: "1rem", color: "red"}}>
+            <p>{this.showErrors(errors, 'email')}</p>
+          </div>
           <FormGroup style={{ textAlign: "left" }}>
             <Label for="examplePassword">Password</Label>
             <Input
@@ -110,12 +119,21 @@ class Login extends Component {
               onChange={this.handleInputChange}
             />
           </FormGroup>
+          <div class = "mb-2" style={{ textAlign: "left", fontSize: "1rem", color: "red"}}>
+            <p>{this.showErrors(errors, 'password')}</p>
+          </div>
+          <div class = "mb-2" style={{ textAlign: "left", fontSize: "1rem", color: "red"}}>
+            <p>{this.showErrors(errors, 'general')}</p>
+          </div>
           <Button className="btn-lg btn-dark w-100">Login</Button>
           <h3 class="mt-2">Don't have an account?</h3>
           <Button
             type="button"
             color="dark"
-            onClick={() => this.setState({ action: "register" })}
+            onClick={() => {
+              this.setState({errors: []});
+              this.setState({ action: "register" })}
+            }
             className="btn-lg"
           >
             Register Now
@@ -125,7 +143,22 @@ class Login extends Component {
     );
   };
 
+  showErrors = (errors, param) => {
+    if(errors) {
+      let i; 
+    let msg = ""
+    for (i = 0; i < errors.length; i++) {
+      if(errors[i].param===param){
+        msg = errors[i].msg
+        break;
+      } 
+    }
+    return msg;
+    }
+  }
+
   register = () => {
+    const {errors} = this.state;
     return (
       <div>
         <Form onSubmit={this.handleRegister} className="login-form m-2">
@@ -140,6 +173,9 @@ class Login extends Component {
               onChange={this.handleInputChange}
             />
           </FormGroup>
+          <div class = "mb-2" style={{ textAlign: "left", fontSize: "1rem", color: "red"}}>
+            <p>{this.showErrors(errors, 'name')}</p>
+          </div>
           <FormGroup style={{ textAlign: "left" }}>
             <Label for="exampleEmail">Email</Label>
             <Input
@@ -150,6 +186,9 @@ class Login extends Component {
               onChange={this.handleInputChange}
             />
           </FormGroup>
+          <div class = "mb-2" style={{ textAlign: "left", fontSize: "1rem", color: "red"}}>
+            <p>{this.showErrors(errors, 'email')}</p>
+          </div>
           <FormGroup style={{ textAlign: "left" }}>
             <Label for="examplePassword">Password</Label>
             <Input
@@ -160,16 +199,22 @@ class Login extends Component {
               onChange={this.handleInputChange}
             />
           </FormGroup>
+          <div class = "mb-2" style={{ textAlign: "left", fontSize: "1rem", color: "red"}}>
+            <p>{this.showErrors(errors, 'password')}</p>
+          </div>
           <FormGroup style={{ textAlign: "left" }}>
             <Label for="passwordConfirm">Confirm Password</Label>
             <Input
-              type="passwordConfirm"
+              type="password"
               name="passwordConfirm"
               id="passwordConfirm"
               placeholder="password placeholder"
               onChange={this.handleInputChange}
             />
           </FormGroup>
+          <div class = "mb-2" style={{ textAlign: "left", fontSize: "1rem", color: "red"}}>
+            <p>{this.showErrors(errors, 'passwordConfirm')}</p>
+          </div>
           <Button type className="btn-lg btn-dark btn-block">
             Register
           </Button>
@@ -177,7 +222,10 @@ class Login extends Component {
           <Button
             type="button"
             color="dark"
-            onClick={() => this.setState({ action: "login" })}
+            onClick={() => {
+              this.setState({errors: []});
+              this.setState({ action: "login" })}
+            }
             className="btn-lg"
           >
             Login

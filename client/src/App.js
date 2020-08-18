@@ -19,7 +19,7 @@ function App() {
         <Route exact path = "/">
           <Landing></Landing>
         </Route>
-        <Route path = "/auth">
+        <Route path = "/home">
           <Navbar></Navbar>
         </Route>
       </Router>

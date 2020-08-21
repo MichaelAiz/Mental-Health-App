@@ -21,7 +21,7 @@ class AppNavbar extends Component {
   render() {
     return (
       <div>
-        <Navbar color="dark" dark expand="sm" className="mb-5">
+        <Navbar color="dark" dark expand="sm" className="mb-2">
           <NavbarBrand href="/" className="mr-auto">
             Mental-Health-App
           </NavbarBrand>
@@ -55,6 +55,7 @@ class AppNavbar extends Component {
 
   componentDidMount(){
    console.log(localStorage.getItem('token'));
+   console.log(localStorage.getItem('userID'));
   }
 }
 

@@ -81,8 +81,12 @@ class Login extends Component {
         email: this.state.email,
         password: this.state.password,
       })
-      .then((res) => localStorage.setItem('token', res.data.token))
-      .then(()=>this.props.history.push("/home"))
+      .then((res) => {
+        this.props.callback({token: res.data.token});
+        this.props.callback({page: "home"});
+        localStorage.setItem('token', res.data.token)
+        localStorage.setItem('userID', res.data.user.id)
+      })
       .catch((errors) => {
         this.setState({errors: errors.response.data.errors });
         console.log(errors.response)
@@ -236,4 +240,4 @@ class Login extends Component {
   };
 }
 
-export default withRouter(Login);
+export default Login;

@@ -13,7 +13,7 @@ import { Container, Row, Col } from "reactstrap";
 import { InputGroup, InputGroupAddon, InputGroupText, Input } from "reactstrap";
 import { Form, FormGroup, Label, FormText } from "reactstrap";
 
-export default function Landing() {
+export default function Landing(props) {
   return (
     <div class="landing-page">
       <div class="landing-body">
@@ -24,7 +24,7 @@ export default function Landing() {
             </h2>
           </Col>
           <Col sm="12" md="8" lg="6" xl = "5">
-            <Login></Login>
+            <Login callback = {props.callback}></Login>
           </Col>
         </Row>
       </div>

@@ -30,6 +30,12 @@ class Router extends Component {
                             <Quotes token = {this.state.token}></Quotes>
                         </div>
                     )
+                    case "components":
+                        return(
+                            <div className = "App">
+                                <h1>Hello</h1>
+                            </div>
+                        )
             }
     }
 }

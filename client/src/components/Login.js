@@ -65,8 +65,13 @@ class Login extends Component {
         password: this.state.password,
         passwordConfirm: this.state.passwordConfirm
       })
-      .then((res) => localStorage.setItem('token', res.data.token))
-      .then(()=>this.props.history.push("/home"))
+      .then((res) => {
+        this.props.callback({token: res.data.token});
+        this.props.callback({userID: res.data.user.id});
+        this.props.callback({page: "home"});
+        localStorage.setItem('token', res.data.token)
+        localStorage.setItem('userID', res.data.user.id)
+      })
       .catch((errors) => {
         console.log(errors.response.data.errors[0])
         this.setState({errors: errors.response.data.errors });
@@ -83,6 +88,7 @@ class Login extends Component {
       })
       .then((res) => {
         this.props.callback({token: res.data.token});
+        this.props.callback({userID: res.data.user.id});
         this.props.callback({page: "home"});
         localStorage.setItem('token', res.data.token)
         localStorage.setItem('userID', res.data.user.id)

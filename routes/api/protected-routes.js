@@ -10,7 +10,7 @@ const User = require('../../models/User');
 //@route get api/protected/quote/get-all
 //desc gets users quotes
 //access Protected
-router.get('/quote/get-all', (req, res) => {
+router.get('/quotes/get-all', (req, res) => {
     user = req.user;
     res.json(user.quotes);
 })
@@ -19,7 +19,7 @@ router.get('/quote/get-all', (req, res) => {
 //@route post api/protected/quote/add
 //desc adds a new quote
 //access Protected 
-router.post('/quote/add', (req, res) => {
+router.post('/quotes/add', (req, res) => {
     user=req.user;
     quoteText = req.body.quote;
     user.quotes.push({"text": quoteText});
@@ -32,7 +32,7 @@ router.post('/quote/add', (req, res) => {
 //@route post api/protected/quote/delete
 // desc deletes a quote
 //access Protected
-router.post('/quote/delete',(req, res) => {
+router.post('/quotes/delete',(req, res) => {
     user = req.user;
     quoteID = req.body.id;
     user.quotes.id(quoteID).remove();

@@ -48,6 +48,23 @@ class Quotes extends Component {
     this.setState({ newQuote: event.target.value });
   };
 
+  deleteQuote = (id) => {
+    const newQuotes = this.state.quotes.filter(quote => quote.id !== id);
+    this.setState({quotes: newQuotes});
+    axios
+      .post(
+        "api/protected/quotes/delete",
+        {
+          id: id
+        },
+        {
+          headers: { Authorization: `Bearer ${this.props.token}` },
+        }
+      )
+      .then((res) => this.setState({ quotes: res.data }));
+
+  }
+
   showQuotes = () => {
       let i =0;
       for(i = 0; i < this.state.quotes.length; i++){
@@ -69,9 +86,13 @@ class Quotes extends Component {
           </InputGroup>
           <ListGroup>
             {this.state.quotes.map(({id, text}) => (
-              <ListGroupItem>
+              <ListGroupItem  >
                 {text}
-                <Button close className = "delete-btn" color = "danger" size="sm"></Button>
+                <Button close className = "delete-btn" color = "danger" size="sm" 
+                  onClick = {() => this.deleteQuote(id)
+                  }
+                  >
+                </Button>
               </ListGroupItem>
             ))}
           </ListGroup>

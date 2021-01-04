@@ -15,5 +15,6 @@ Login + quote creation/deletion
 ![Login](Demo/LoginDemo.gif)
 
 Invalid Credentials
-![InvalidLogin](Demo/failedLogin.JPG) ![InvalidRegister](Demo/dfailedRegister.JPG)
+
+![InvalidLogin](Demo/failedLogin.JPG) ![InvalidRegister](Demo/failedRegister.JPG)
 

@@ -7,9 +7,13 @@ Users can record positive quotes and thoughts, as well as, in the future, pictur
 ## Demos
 
 Registration
-![Main App](Demo/RegisterDemo.gif)
+
+![Register](Demo/RegisterDemo.gif)
 
 Login + quote creation/deletion
 
+![Login](Demo/LoginDemo.gif)
+
 Invalid Credentials
+![InvalidLogin](Demo/failedLogin.JPG) ![InvalidRegister](Demo/dfailedRegister.JPG)
 
